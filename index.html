@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>bibtex2gbt7714</title>
+    </head>
+    <script>
+        const reftype = {
+            article: "[J]",
+            mastersthesis: "[D]",
+            phdthesis: "[D]",
+            inproceedings: "[C]",
+            conference: "[C]",
+            book: "[M]",
+            booklet: "[M]",
+            techreport: "[N]",
+            misc: "[P]",
+            manual: "[P]",
+        };
+
+        // 获取 BibTeX 记录的 JSON 形式
+        function getBibJson(lines) {
+            let jsonLines = ["{\r\n"];
+            for (let i = 1; i < lines.length - 1; i++) {
+                let l = lines[i].trim();
+
+                if (l.includes('"') && l.indexOf('"') !== l.lastIndexOf('"')) {
+                    let index_1 = l.indexOf("=");
+                    let index_2 = l.indexOf('"');
+                    let index_3 = l.lastIndexOf('"');
+                    l = '"' + l.substring(0, index_1).trim() + '":' + l.substring(index_2, index_3) + '",\r\n';
+                } else {
+                    if (l.includes("=") && !l.includes('"') && !l.includes("{") && !l.includes("}")) {
+                        let index_1 = l.indexOf("=");
+                        let index_2 = l.indexOf(",");
+                        l = '"' + l.substring(0, index_1).trim() + '":"' + l.substring(index_1 + 1, index_2).trim() + '",\r\n';
+                    } else {
+                        l = l.replace("{", '"').replace("}", '"');
+                        let index = l.indexOf("=");
+                        if (index !== -1) {
+                            l = '"' + l.substring(0, index).trim() + '":' + l.substring(index + 1).trim() + "\r\n";
+                        }
+                    }
+                }
+
+                jsonLines.push(l);
+            }
+
+            jsonLines.push("}");
+
+            let lastLine = jsonLines[jsonLines.length - 2];
+            let lastQuote = lastLine.lastIndexOf('"');
+            jsonLines[jsonLines.length - 2] = lastLine.substring(0, lastQuote) + lastLine.substring(lastQuote).replace(",", "") + "\r\n";
+
+            let jsonString = jsonLines.join("").replace(/\r/g, "").replace(/\n/g, "").replace(/\t/g, "").replace(/\\/g, "");
+            return JSON.parse(jsonString);
+        }
+
+        // 获取作者字符串
+        function getAuthor(bibJson) {
+            // 检查是否包含中文字符
+            const containsChinese = /[\u4e00-\u9fa5]/.test(bibJson["author"]);
+
+            // 如果是中文姓名，处理中文格式
+            if (containsChinese) {
+                const chineseAuthors = bibJson["author"].split(" and ").map((name) => name.trim());
+                if (chineseAuthors.length > 3) {
+                    return chineseAuthors.slice(0, 3).join(", ") + ", 等.";
+                } else {
+                    return chineseAuthors.join(", ") + ".";
+                }
+            }
+
+            // 正则表达式，用来匹配英文姓名的格式
+            const regex = /([A-Za-z\-]+),\s([A-Za-z\-]+)/g;
+            const authors = [];
+            let match;
+
+            // 匹配所有的作者并格式化
+            while ((match = regex.exec(bibJson["author"])) !== null) {
+                authors.push(`${match[1]} ${match[2][0]}`);
+            }
+
+            // 如果作者数量超过3个，添加"et al."
+            if (authors.length > 3) {
+                return authors.slice(0, 3).join(", ") + ", et al.";
+            } else {
+                return authors.join(", ") + ".";
+            }
+        }
+
+        // 生成不同类型的引用格式
+        function type_D(bibJson, reftype, bibtype) {
+            return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["school"]}, ${bibJson["year"]}.`;
+        }
+
+        function type_J(bibJson, reftype, bibtype) {
+            let _year = bibJson["year"] ? `, ${bibJson["year"]}` : "";
+            let _volume = bibJson["volume"] ? `, ${bibJson["volume"]}` : "";
+            let _number = bibJson["number"] ? `(${bibJson["number"]})` : "";
+            let _pages = bibJson["pages"] ? `: ${bibJson["pages"]}` : "";
+
+            if (bibJson["number"] && !bibJson["pages"]) {
+                _number = "";
+                _pages = `:${bibJson["number"]}`;
+            }
+
+            return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["journal"]}${_year}${_volume}${_number}${_pages}.`;
+        }
+
+        function type_C(bibJson, reftype, bibtype) {
+            let _year = bibJson["year"] ? `. ${bibJson["year"]}` : "";
+            let _pages = bibJson["pages"] ? `: ${bibJson["pages"]}` : "";
+
+            return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}//${bibJson["booktitle"]}${_year}${_pages}.`;
+        }
+
+        function type_N(bibJson, reftype, bibtype) {
+            return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["institution"]}, ${bibJson["year"]}.`;
+        }
+
+        // 函数：点击按钮时调用
+        function sendData() {
+            var input1 = document.getElementById("input1").value; // 获取第一个输入框的内容
+
+            let lines = input1.split("\n");
+
+            let lines_multibib = [[]];
+            let lines_singlebib = [];
+            let bib_count = 0;
+
+            // 分割 BibTeX 数据为多条记录
+            for (let l of lines) {
+                if (l.trim() === "") continue;
+                if (l.includes("@")) {
+                    if (bib_count % 2 === 1) {
+                        lines_multibib.push([...lines_singlebib]);
+                        lines_singlebib = [];
+                    }
+                    bib_count++;
+                }
+                lines_singlebib.push(l);
+            }
+
+            lines_multibib.push([...lines_singlebib]);
+            lines_multibib.shift();
+
+            // 处理每个 bib 记录并格式化
+            let fileBGT = [];
+
+            for (let _lines of lines_multibib) {
+                let index_1 = _lines[0].indexOf("@");
+                let index_2 = _lines[0].indexOf("{");
+                if (index_2 === -1) index_2 = _lines[0].indexOf("(");
+
+                let bibtype = _lines[0]
+                    .substring(index_1 + 1, index_2)
+                    .trim()
+                    .toLowerCase();
+                let index_3 = _lines[_lines.length - 1].lastIndexOf(")");
+                if (index_3 !== -1) {
+                    _lines[_lines.length - 1] = _lines[_lines.length - 1].substring(0, index_3);
+                    _lines.push("}");
+                }
+
+                let bibJson = getBibJson(_lines);
+
+                switch (reftype[bibtype]) {
+                    case "[J]":
+                        fileBGT.push(type_J(bibJson, reftype, bibtype));
+                        break;
+                    case "[D]":
+                        fileBGT.push(type_D(bibJson, reftype, bibtype));
+                        break;
+                    case "[C]":
+                        fileBGT.push(type_C(bibJson, reftype, bibtype));
+                        break;
+                    case "[N]":
+                        fileBGT.push(type_N(bibJson, reftype, bibtype));
+                        break;
+                    default:
+                        fileBGT.push("** 类型不支持 **");
+                        break;
+                }
+            }
+
+            document.getElementById("input2").value = fileBGT.join("\r\n");
+        }
+    </script>
+    <body>
+        <h2>BibTeX to GBT7714</h2>
+
+        <label for="input1">BibTeX:</label><br />
+        <textarea type="text" id="input1" name="input1" style="width: 60%; height: 120pt"></textarea><br /><br />
+
+        <label for="input2">GBT7714:</label><br />
+        <textarea type="text" id="input2" name="input2" readonly style="width: 60%; height: 120pt"></textarea><br /><br />
+
+        <button onclick="sendData()">转换</button>
+    </body>
+</html>

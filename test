@@ -1,0 +1,48 @@
+@inproceedings{zhu2024sni,
+    title={Sni-slam: Semantic neural implicit slam},
+    author={Zhu, Siting and Wang, Guangming and Blum, Hermann and Liu, Jiuming and Song, Liang and Pollefeys, Marc and Wang, Hesheng},
+    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+    pages={21167--21177},
+    year={2024}
+  }
+
+
+@article{kerbl20233d,
+  title={3d gaussian splatting for real-time radiance field rendering.},
+  author={Kerbl, Bernhard and Kopanas, Georgios and Leimkuhler, Thomas and Drettakis, George},
+  journal={ACM Trans. Graph.},
+  volume={42},
+  number={4},
+  pages={139--1},
+  year={2023}
+}
+
+@article{郑太雄2020基于视觉的三维重建关键技术研究综述,
+  title={基于视觉的三维重建关键技术研究综述},
+  author={郑太雄 and 黄帅 and 李永福 and 冯明驰},
+  journal={自动化学报},
+  volume={46},
+  number={4},
+  pages={631--652},
+  year={2020},
+  publisher={自动化学报}
+}
+
+@article{郭焱1999玉米冠层的数学描述与三维重建研究,
+  title={玉米冠层的数学描述与三维重建研究},
+  author={郭焱 and 李保国},
+  journal={应用生态学报},
+  volume={10},
+  number={1},
+  pages={39},
+  year={1999}
+}
+
+Zhu S, Wang G, Blum H, et al. Sni-slam: Semantic neural implicit slam[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2024: 21167-21177.
+
+
+Kerbl B, Kopanas G, Leimkühler T, et al. 3d gaussian splatting for real-time radiance field rendering[J]. ACM Trans. Graph., 2023, 42(4): 139:1-139:14.
+
+郑太雄, 黄帅, 李永福, 等. 基于视觉的三维重建关键技术研究综述[J]. 自动化学报, 2020, 46(4): 631-652.
+
+郭焱, 李保国. 玉米冠层的数学描述与三维重建研究[J]. 应用生态学报, 1999, 10(1): 39.
