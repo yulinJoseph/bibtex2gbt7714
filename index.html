@@ -120,6 +120,10 @@
             return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["institution"]}, ${bibJson["year"]}.`;
         }
 
+        function type_M(bibJson, reftype, bibtype) {
+            return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["publisher"]}, ${bibJson["year"]}.`;
+        }
+
         // 函数：点击按钮时调用
         function sendData() {
             var input1 = document.getElementById("input1").value; // 获取第一个输入框的内容
@@ -178,6 +182,9 @@
                         break;
                     case "[N]":
                         fileBGT.push(type_N(bibJson, reftype, bibtype));
+                        break;
+                    case "[M]":
+                        fileBGT.push(type_M(bibJson, reftype, bibtype));
                         break;
                     default:
                         fileBGT.push("** 类型不支持 **");
