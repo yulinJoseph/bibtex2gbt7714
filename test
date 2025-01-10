@@ -1,10 +1,10 @@
 @inproceedings{zhu2024sni,
-    title={Sni-slam: Semantic neural implicit slam},
-    author={Zhu, Siting and Wang, Guangming and Blum, Hermann and Liu, Jiuming and Song, Liang and Pollefeys, Marc and Wang, Hesheng},
-    booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-    pages={21167--21177},
-    year={2024}
-  }
+  title={Sni-slam: Semantic neural implicit slam},
+  author={Zhu, Siting and Wang, Guangming and Blum, Hermann and Liu, Jiuming and Song, Liang and Pollefeys, Marc and Wang, Hesheng},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={21167--21177},
+  year={2024}
+}
 
 
 @article{kerbl20233d,
@@ -39,7 +39,6 @@
 }
 
 Zhu S, Wang G, Blum H, et al. Sni-slam: Semantic neural implicit slam[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2024: 21167-21177.
-
 
 Kerbl B, Kopanas G, Leimkühler T, et al. 3d gaussian splatting for real-time radiance field rendering[J]. ACM Trans. Graph., 2023, 42(4): 139:1-139:14.
 
