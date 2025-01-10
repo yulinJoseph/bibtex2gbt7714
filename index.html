@@ -105,14 +105,14 @@
                 _number = "";
                 _pages = `:${bibJson["number"]}`;
             }
-
+            _pages = _pages.replace(/(\d+)--(\d+)/g, "$1-$2");
             return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}. ${bibJson["journal"]}${_year}${_volume}${_number}${_pages}.`;
         }
 
         function type_C(bibJson, reftype, bibtype) {
             let _year = bibJson["year"] ? `. ${bibJson["year"]}` : "";
             let _pages = bibJson["pages"] ? `: ${bibJson["pages"]}` : "";
-
+            _pages = _pages.replace(/(\d+)--(\d+)/g, "$1-$2");
             return `${getAuthor(bibJson)} ${bibJson["title"]}${reftype[bibtype]}//${bibJson["booktitle"]}${_year}${_pages}.`;
         }
 

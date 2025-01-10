@@ -38,6 +38,13 @@
   year={1999}
 }
 
+@book{pritsker1995introduction,
+  title={Introduction to Simulation and SLAM II},
+  author={Pritsker, A Alan B},
+  year={1995},
+  publisher={John Wiley \& Sons, Inc.}
+}
+
 Zhu S, Wang G, Blum H, et al. Sni-slam: Semantic neural implicit slam[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2024: 21167-21177.
 
 Kerbl B, Kopanas G, Leimkühler T, et al. 3d gaussian splatting for real-time radiance field rendering[J]. ACM Trans. Graph., 2023, 42(4): 139:1-139:14.
@@ -45,3 +52,5 @@ Kerbl B, Kopanas G, Leimkühler T, et al. 3d gaussian splatting for real-time ra
 郑太雄, 黄帅, 李永福, 等. 基于视觉的三维重建关键技术研究综述[J]. 自动化学报, 2020, 46(4): 631-652.
 
 郭焱, 李保国. 玉米冠层的数学描述与三维重建研究[J]. 应用生态学报, 1999, 10(1): 39.
+
+Pritsker A A B. Introduction to Simulation and SLAM II[M]. John Wiley & Sons, Inc., 1995.
